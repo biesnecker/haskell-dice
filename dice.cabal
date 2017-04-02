@@ -6,8 +6,8 @@ version:             0.1
 synopsis:            A simple dice throwing app
 -- description:         
 homepage:            https://github.com/biesnecker/haskell-dice
-license:             PublicDomain
-license-file:        LICENSE
+license:             MIT
+license-file:        COPYING.txt
 author:              John Biesnecker
 maintainer:          jbiesnecker@gmail.com
 -- copyright:           
