@@ -1,3 +1,4 @@
+module Main where
 import System.Random
 import System.Environment
 import Control.Monad
