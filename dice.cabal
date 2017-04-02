@@ -7,7 +7,7 @@ synopsis:            A simple dice throwing app
 -- description:         
 homepage:            https://github.com/biesnecker/haskell-dice
 license:             MIT
-license-file:        COPYING.txt
+license-file:        LICENSE
 author:              John Biesnecker
 maintainer:          jbiesnecker@gmail.com
 -- copyright:           
