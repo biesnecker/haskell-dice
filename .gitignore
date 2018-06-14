@@ -6,3 +6,4 @@ binaries
 *.chi
 *.chs.h
 .virthualenv
+.stack-work
