@@ -7,7 +7,7 @@ module Main
 import Control.Monad.Random
 import Options.Applicative
 
-import Control.Monad (replicateM, replicateM_)
+import Control.Monad (forM_, replicateM)
 import Data.Semigroup ((<>))
 import System.Environment (getArgs)
 
@@ -41,14 +41,14 @@ opts = info (diceArgs <**> helper)
 tossDice :: MonadRandom m => Int -> Int -> m [Int]
 tossDice n m = replicateM n $ getRandomR (1, m)
 
-tossDiceAndPrint :: Int -> Int -> IO ()
-tossDiceAndPrint n m = do
-  g <- newStdGen
-  let r = evalRand (tossDice n m) g
-  putStrLn $ "Result: " ++ show (sum r) ++ "\tDice: " ++ show r
+tossDiceMultiple :: MonadRandom m => Args -> m [[Int]]
+tossDiceMultiple Args{..} = replicateM times $ tossDice n m
 
 main :: IO ()
 main = do
-  args@Args{..} <- execParser opts
+  args <- execParser opts
   putStrLn $ show args
-  replicateM_ times $ tossDiceAndPrint n m
+  g <- newStdGen
+  let rs = evalRand (tossDiceMultiple args) g
+  forM_ rs $ \r ->
+    putStrLn $ "Result: " ++ show (sum r) ++ "\tDice: " ++ show r
