@@ -51,5 +51,4 @@ main :: IO ()
 main = do
   args@Args{..} <- execParser opts
   putStrLn $ show args
-  g <- newStdGen
   replicateM_ times $ tossDiceAndPrint n m
