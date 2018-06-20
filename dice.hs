@@ -4,11 +4,11 @@ module Main
   ( main
   ) where
 
+import Control.Monad.Random
 import Options.Applicative
 
-import Control.Monad (replicateM_)
+import Control.Monad (replicateM, replicateM_)
 import Data.Semigroup ((<>))
-import System.Random (newStdGen, RandomGen, randomRs)
 import System.Environment (getArgs)
 
 data Args = Args
@@ -38,13 +38,18 @@ opts = info (diceArgs <**> helper)
   <> header "dice"
   )
 
-tossDice :: (RandomGen g) => Int -> Int -> g -> [Int]
-tossDice x y = take x . randomRs (1, y)
+tossDice :: MonadRandom m => Int -> Int -> m [Int]
+tossDice n m = replicateM n $ getRandomR (1, m)
+
+tossDiceAndPrint :: Int -> Int -> IO ()
+tossDiceAndPrint n m = do
+  g <- newStdGen
+  let r = evalRand (tossDice n m) g
+  putStrLn $ "Result: " ++ show (sum r) ++ "\tDice: " ++ show r
 
 main :: IO ()
 main = do
   args@Args{..} <- execParser opts
   putStrLn $ show args
-  replicateM_ times $ do
-    r <- tossDice n m <$> newStdGen
-    putStrLn $ "Result: " ++ show (sum r) ++ "\tDice: " ++ show r
+  g <- newStdGen
+  replicateM_ times $ tossDiceAndPrint n m
